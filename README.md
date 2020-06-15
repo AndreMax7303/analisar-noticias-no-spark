@@ -1,14 +1,19 @@
+```
 scala> val noticiasCorp = noticias.withColumn("corpora", concat(col("titulo"), lit("\n"), col("descricao"), lit("\n"), col("conteudo")))
 noticiasCorp: org.apache.spark.sql.DataFrame = [categorias: array<string>, conteudo: string ... 6 more fields]
-
+```
+```
 scala> val corpora = noticiasCorp.select("corpora","dominio","categorias","data")
 corpora: org.apache.spark.sql.DataFrame = [corpora: string, dominio: string ... 2 more fields]
-
+```
+```
 scala> corpora.write.partitionBy("data", "dominio").format("json").save("corpora")
-
+```
+```
 scala> val corporaPorData = corpora.groupBy("data").count()
 corporaPorData: org.apache.spark.sql.DataFrame = [data: date, count: bigint]
-
+```
+```
 scala> corporaPorData.show
 +----------+-----+
 |      data|count|
@@ -35,10 +40,12 @@ scala> corporaPorData.show
 |2019-05-14|    2|
 +----------+-----+
 only showing top 20 rows
-
+```
+```
 scala> val corporaPorDom = corpora.groupBy("dominio").count()
 corporaPorDom: org.apache.spark.sql.DataFrame = [dominio: string, count: bigint]
-
+```
+```
 scala> corporaPorDom.show
 +--------------------+-----+
 |             dominio|count|
@@ -50,5 +57,5 @@ scala> corporaPorDom.show
 |      rss.uol.com.br| 3676|
 | rss.home.uol.com.br| 3423|
 +--------------------+-----+
-
+```
 
